@@ -65,6 +65,14 @@ var mapping = {
 function createUI2(data) {
   var interpreter = $("#interpreter").html("");
   console.log(data);
+  if(Array.isArray(data)){
+    addListElements(interpreter, data);
+  } else {
+    addEntity(interpreter, data);
+  }
+}
+
+function addEntity(interpreter, data) {
   interpreter.append($("<h3>").text(data.name))
     .append($("<div>").text(data.description))
   for (let i = 0; i < data.properties.length; i++) {
@@ -145,30 +153,8 @@ function createUI2(data) {
           url: "/" + type,
           success: function (data) {
             data = JSON.parse(data);
-            console.log(listName);
             interpreter.append($("<h3>").text(listName));
-            var list = $("<div>").addClass("list");
-            for (let i = 0; i < data.length; i++) {
-              const element = data[i];
-
-              var id;
-              for (let x = 0; x < element.properties.length; x++) {
-                const innerProp = element.properties[x];
-                if (innerProp.name == element.idProperty)
-                  id = innerProp.content;
-              }
-              list.append(
-                $("<div>").addClass("elem")
-                .append($("<a>").attr("href", "#/" + element.name + "/" + id).text(id))
-                .append($("<br>"))
-                .append($("<b>").text(element.name))
-                .append($("<hr>"))
-                .append($("<div>").text(JSON.stringify(element)))
-              );
-            }
-            interpreter.append(list);
-
-
+            addListElements(interpreter, data)
           },
           contentType: "application/json",
           dataType: 'json'
@@ -176,6 +162,29 @@ function createUI2(data) {
       }
     }
   }
+}
+
+function addListElements(interpreter, data) {
+  var list = $("<div>").addClass("list");
+  for (let i = 0; i < data.length; i++) {
+    const element = data[i];
+    var id;
+    for (let x = 0; x < element.properties.length; x++) {
+      const innerProp = element.properties[x];
+      if (innerProp.name == element.idProperty)
+        id = innerProp.content;
+    }
+    list.append(
+      $("<div>").addClass("elem")
+      .append($("<a>").attr("href", "#/" + element.name + "/" + id).text(id))
+      .append($("<br>"))
+      .append($("<b>").text(element.name))
+      .append($("<hr>"))
+      .append($("<div>").text(JSON.stringify(element)))
+    );
+  }
+  interpreter.append(list);
+
 }
 
 

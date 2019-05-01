@@ -1,4 +1,4 @@
-package de.cherry.webinterpreter;
+package de.cherry.webinterpreter.data;
 
 public class Property {
   public String name;

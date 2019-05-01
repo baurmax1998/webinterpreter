@@ -1,4 +1,4 @@
-package de.cherry.webinterpreter;
+package de.cherry.webinterpreter.data;
 
 import java.util.ArrayList;
 import java.util.Arrays;
